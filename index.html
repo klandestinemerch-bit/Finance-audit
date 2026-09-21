@@ -570,6 +570,16 @@ table.data tbody tr:last-child td{ border-bottom:none; }
       <h2 class="section-title">Ringkasan Audit</h2>
       <p class="section-sub" id="dashSub">Berdasarkan Audit Full Stock 15 Sep 2026 &middot; diperbarui live saat ada scan baru.</p>
 
+      <div class="card panel" id="dashDbCard" style="margin-bottom:18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+          <div style="min-width:0;">
+            <h3 style="margin-bottom:4px;">Database Produk</h3>
+            <p class="panel-sub" style="margin-bottom:0;" id="dashDbInfo">-</p>
+          </div>
+          <button type="button" id="dashResetDbBtn" class="btn btn-danger" style="flex:none;">Reset Database Produk</button>
+        </div>
+      </div>
+
       <div class="kpi-grid">
         <div class="card kpi">
           <span class="kpi-label">Total SKU</span>
@@ -927,7 +937,7 @@ var DATA_SOURCE = 'bawaan'; // 'bawaan' | 'lokal' | 'publikasi'
 (function(){
   try{
     var raw = localStorage.getItem('audit_master_override_v1');
-    if(raw){ var parsed = JSON.parse(raw); if(parsed && parsed.items && parsed.items.length){ DATA = parsed; DATA_SOURCE = 'lokal'; } }
+    if(raw){ var parsed = JSON.parse(raw); if(parsed && Array.isArray(parsed.items)){ DATA = parsed; DATA_SOURCE = 'lokal'; } }
   }catch(e){}
 })();
 var ITEMS = DATA.items;
@@ -1021,20 +1031,27 @@ function fmtDateID(isoDate){
 function updateDashSub(){
   var el = document.getElementById('dashSub');
   if(!el) return;
+  if(ITEMS.length===0){
+    el.textContent = 'Belum ada database produk — silakan impor file Excel di tab Impor Database.';
+    return;
+  }
   el.textContent = 'Berdasarkan ' + branchLabel() + ' ' + fmtDateID(DATA.auditDate) + ' · diperbarui live saat ada scan baru.';
 }
 function updateCurrentDbInfo(){
   var elCount = document.getElementById('curDbCount');
   var elSource = document.getElementById('curDbSource');
   var elUpdated = document.getElementById('curDbUpdated');
-  if(!elCount) return;
-  elCount.textContent = fmtNum(ITEMS.length) + ' SKU';
+  var dashInfo = document.getElementById('dashDbInfo');
+  if(!elCount && !dashInfo) return;
+  var countText = fmtNum(ITEMS.length) + ' SKU';
   var srcLabel;
-  if(DATA_SOURCE==='lokal') srcLabel = 'Impor (' + (DATA.sourceFile||'file') + ') — tersimpan di perangkat ini saja';
+  if(ITEMS.length===0) srcLabel = 'Kosong — belum ada data produk';
+  else if(DATA_SOURCE==='lokal') srcLabel = 'Impor (' + (DATA.sourceFile||'file') + ') — tersimpan di perangkat ini saja';
   else if(DATA.sourceFile) srcLabel = 'Diimpor dari ' + DATA.sourceFile + ' — tersimpan untuk semua pengguna';
   else srcLabel = branchLabel();
-  elSource.textContent = srcLabel;
-  elUpdated.textContent = fmtDateTime(DATA.generatedAt) !== '-' ? fmtDateTime(DATA.generatedAt) : fmtDateID(DATA.auditDate);
+  var updatedText = fmtDateTime(DATA.generatedAt) !== '-' ? fmtDateTime(DATA.generatedAt) : fmtDateID(DATA.auditDate);
+  if(elCount){ elCount.textContent = countText; elSource.textContent = srcLabel; elUpdated.textContent = updatedText; }
+  if(dashInfo){ dashInfo.textContent = countText + ' · ' + srcLabel; }
 }
 
 /* ============ IDENTITY ============ */
@@ -1057,9 +1074,25 @@ function statusOf(item){
 }
 var STATUS_LABEL = {belum:'Belum Dicek', sesuai:'Sesuai', kurang:'Kurang', lebih:'Lebih'};
 
-/* ============ STORE (db capability with local fallback) ============ */
-var dbNS = null, assetsNS = null, storeMode = 'connecting';
-var unsubs = [];
+/* ============ STORE (Supabase live sync with local fallback) ============ */
+var SUPABASE_URL = 'https://tvgmtklzdgistjvlziga.supabase.co';
+var SUPABASE_ANON_KEY = 'sb_publishable_msr4bJwxsLNFgGUofntP9Q_D7u6-92y';
+var SUPABASEJS_SRC = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';
+var sb = null, storeMode = 'connecting';
+var SUPABASEJS_LOADING = null;
+
+function loadSupabaseJs(){
+  if(window.supabase && window.supabase.createClient) return Promise.resolve(true);
+  if(SUPABASEJS_LOADING) return SUPABASEJS_LOADING;
+  SUPABASEJS_LOADING = new Promise(function(resolve){
+    var s = document.createElement('script');
+    s.src = SUPABASEJS_SRC;
+    s.onload = function(){ resolve(!!(window.supabase && window.supabase.createClient)); };
+    s.onerror = function(){ resolve(false); };
+    document.head.appendChild(s);
+  });
+  return SUPABASEJS_LOADING;
+}
 
 function updateSyncPill(){
   var pill = document.getElementById('syncPill');
@@ -1093,46 +1126,42 @@ function saveLocalFallback(){
   }catch(e){}
 }
 
-function subscribeDb(){
-  try{
-    var col = dbNS.collection('scans');
-    var un1 = col.onSnapshot(function(snap){
-      snap.docChanges().forEach(function(ch){
-        if(ch.type==='removed') liveScans.delete(ch.doc.id);
-        else liveScans.set(ch.doc.id, ch.doc.data());
-      });
-      scheduleRecompute();
-    }, function(err){ console.warn('scans sub error', err); });
-    unsubs.push(un1);
-
-    var colU = dbNS.collection('unknown');
-    var un2 = colU.onSnapshot(function(snap){
-      snap.docChanges().forEach(function(ch){
-        if(ch.type==='removed') liveUnknown.delete(ch.doc.id);
-        else liveUnknown.set(ch.doc.id, ch.doc.data());
-      });
-      scheduleRecompute();
-    }, function(err){ console.warn('unknown sub error', err); });
-    unsubs.push(un2);
-  }catch(e){
-    storeMode = 'local';
-    loadLocalFallback();
-    updateSyncPill();
-  }
+function rowToScan(row){
+  return { kode:row.kode, nama:row.nama, kategori:row.kategori, qty:row.qty||0, lastTs:row.last_ts, lastSrc:row.last_src, lastBy:row.last_by, recentEvents:(row.recent_events||[]) };
+}
+function rowToUnknown(row){
+  return { code:row.code, qty:row.qty||0, lastTs:row.last_ts, lastSrc:row.last_src, lastBy:row.last_by };
 }
 
-async function dbBumpDoc(path, buildPatch){
-  var ref = dbNS.doc(path);
-  var lease = await ref.acquire({holder: deviceId, ttlMs: 3000});
-  if(!lease.acquired){
-    await sleep(350);
-    lease = await ref.acquire({holder: deviceId, ttlMs: 3000});
-  }
-  var snap = await ref.get();
-  var cur = snap.exists ? snap.data() : null;
-  var patch = buildPatch(cur);
-  await ref.set(patch);
-  return patch;
+async function loadInitialLiveData(){
+  var res1 = await sb.from('scans').select('*');
+  if(res1.error) throw res1.error;
+  liveScans.clear();
+  (res1.data||[]).forEach(function(row){ liveScans.set(row.kode, rowToScan(row)); });
+  var res2 = await sb.from('unknown_scans').select('*');
+  if(res2.error) throw res2.error;
+  liveUnknown.clear();
+  (res2.data||[]).forEach(function(row){ liveUnknown.set(row.id, rowToUnknown(row)); });
+}
+
+function subscribeRealtime(){
+  try{
+    sb.channel('audit-live-scans')
+      .on('postgres_changes', {event:'*', schema:'public', table:'scans'}, function(payload){
+        if(payload.eventType==='DELETE'){ liveScans.delete(payload.old.kode); }
+        else { liveScans.set(payload.new.kode, rowToScan(payload.new)); }
+        scheduleRecompute();
+      })
+      .on('postgres_changes', {event:'*', schema:'public', table:'unknown_scans'}, function(payload){
+        if(payload.eventType==='DELETE'){ liveUnknown.delete(payload.old.id); }
+        else { liveUnknown.set(payload.new.id, rowToUnknown(payload.new)); }
+        scheduleRecompute();
+      })
+      .on('postgres_changes', {event:'*', schema:'public', table:'exports'}, function(){
+        if(exportHistoryMode==='cloud') refreshExportHistory();
+      })
+      .subscribe();
+  }catch(e){ console.warn('realtime subscribe failed', e); }
 }
 
 async function recordScan(item, source, qtyToAdd){
@@ -1142,11 +1171,11 @@ async function recordScan(item, source, qtyToAdd){
   var ev = { ts: now, src: source, by: by };
   if(storeMode==='db'){
     try{
-      await dbBumpDoc('scans/' + item.k, function(cur){
-        var curQty = cur ? (cur.qty||0) : 0;
-        var events = [ev].concat(cur && cur.recentEvents ? cur.recentEvents : []).slice(0,15);
-        return { kode:item.k, nama:item.n, kategori:item.c, qty: curQty+qtyToAdd, lastTs: now, lastSrc: source, lastBy: by, recentEvents: events };
-      });
+      var res = await sb.rpc('bump_scan', { p_kode:item.k, p_nama:item.n, p_kategori:item.c, p_qty_add:qtyToAdd, p_ts:now, p_src:source, p_by:by });
+      if(res.error) throw res.error;
+      var cur = liveScans.get(item.k) || {qty:0, recentEvents:[]};
+      liveScans.set(item.k, { kode:item.k, nama:item.n, kategori:item.c, qty:(cur.qty||0)+qtyToAdd, lastTs:now, lastSrc:source, lastBy:by, recentEvents:[ev].concat(cur.recentEvents||[]).slice(0,15) });
+      scheduleRecompute();
     }catch(e){ toast('Gagal menyimpan scan (jaringan). Coba lagi.', 'bad'); return null; }
   } else {
     var cur2 = liveScans.get(item.k) || {qty:0, recentEvents:[]};
@@ -1164,10 +1193,11 @@ async function recordUnknown(code, source){
   var id = sanitizeId(code);
   if(storeMode==='db'){
     try{
-      await dbBumpDoc('unknown/' + id, function(cur){
-        var curQty = cur ? (cur.qty||0) : 0;
-        return { code:String(code), qty:curQty+1, lastTs: now, lastSrc: source, lastBy: by };
-      });
+      var res = await sb.rpc('bump_unknown', { p_id:id, p_code:String(code), p_qty_add:1, p_ts:now, p_src:source, p_by:by });
+      if(res.error) throw res.error;
+      var cur = liveUnknown.get(id) || {qty:0};
+      liveUnknown.set(id, { code:String(code), qty:(cur.qty||0)+1, lastTs: now, lastSrc: source, lastBy: by });
+      scheduleRecompute();
     }catch(e){}
   } else {
     var cur2 = liveUnknown.get(id) || {qty:0};
@@ -1180,14 +1210,9 @@ async function recordUnknown(code, source){
 async function resetLiveSession(){
   if(storeMode==='db'){
     try{
-      var ids = [];
-      var snap = await dbNS.collection('scans').get();
-      snap.docs.forEach(function(d){ ids.push(d.id); });
-      for(var i=0;i<ids.length;i++){ await dbNS.doc('scans/'+ids[i]).delete(); }
-      var idsU = [];
-      var snapU = await dbNS.collection('unknown').get();
-      snapU.docs.forEach(function(d){ idsU.push(d.id); });
-      for(var j=0;j<idsU.length;j++){ await dbNS.doc('unknown/'+idsU[j]).delete(); }
+      var res = await sb.rpc('reset_live_session');
+      if(res.error) throw res.error;
+      liveScans.clear(); liveUnknown.clear();
     }catch(e){ toast('Gagal reset, coba lagi.', 'bad'); return; }
   } else {
     liveScans.clear(); liveUnknown.clear(); saveLocalFallback();
@@ -1198,15 +1223,18 @@ async function resetLiveSession(){
 
 async function initStore(){
   try{
-    if(window.claude && window.claude.use){ dbNS = await window.claude.use('db'); }
-  }catch(e){ dbNS = null; }
-  if(dbNS){ storeMode = 'db'; subscribeDb(); }
-  else { storeMode = 'local'; loadLocalFallback(); }
+    var ok = await loadSupabaseJs();
+    if(!ok) throw new Error('supabase-js failed to load');
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    await loadInitialLiveData();
+    subscribeRealtime();
+    storeMode = 'db';
+  }catch(e){
+    console.warn('Supabase live sync unavailable, falling back to local mode.', e);
+    sb = null; storeMode = 'local'; loadLocalFallback();
+  }
   updateSyncPill();
   scheduleRecompute();
-  try{
-    if(dbNS && window.claude && window.claude.use){ assetsNS = await window.claude.use('assets'); }
-  }catch(e){ assetsNS = null; }
   initExportHistory();
 }
 
@@ -1801,23 +1829,25 @@ function saveExportHistoryLocal(){
 }
 
 function initExportHistory(){
-  if(dbNS && assetsNS){
+  if(storeMode==='db' && sb){
     exportHistoryMode = 'cloud';
-    try{
-      var q = dbNS.collection('exports').orderBy('createdAt','desc').limit(20);
-      q.onSnapshot(function(snap){
-        exportHistory = snap.docs.map(function(d){
-          var v = d.data() || {};
-          return { id: d.id, filename: v.filename, createdAt: v.createdAt, sizeBytes: v.sizeBytes, by: v.by, assetId: v.assetId };
-        });
-        renderExportHistory();
-      }, function(err){ console.warn('export history sub error', err); });
-      return;
-    }catch(e){ exportHistoryMode = 'local'; }
+    refreshExportHistory();
+    return;
   }
   exportHistoryMode = 'local';
   loadExportHistoryLocal();
   renderExportHistory();
+}
+
+async function refreshExportHistory(){
+  try{
+    var res = await sb.from('exports').select('*').order('created_at', {ascending:false}).limit(20);
+    if(res.error) throw res.error;
+    exportHistory = (res.data||[]).map(function(v){
+      return { id: v.id, filename: v.filename, createdAt: v.created_at, sizeBytes: v.size_bytes, by: v.by, storagePath: v.storage_path };
+    });
+    renderExportHistory();
+  }catch(e){ console.warn('export history refresh failed', e); }
 }
 
 function exportHistIcon(){
@@ -1847,11 +1877,17 @@ function renderExportHistory(){
 }
 
 async function redownloadExport(h){
-  if(h.assetId){
+  if(h.storagePath){
     try{
-      var win = window.open('/_blob/' + h.assetId, '_blank', 'noopener');
-      if(!win) toast('Izinkan popup untuk mengunduh ulang.', 'warn');
-    }catch(e){ toast('Gagal membuka file. Aset mungkin sudah dihapus.', 'bad'); }
+      var pub = sb.storage.from('exports').getPublicUrl(h.storagePath);
+      var url = pub && pub.data && pub.data.publicUrl;
+      if(url){
+        var win = window.open(url, '_blank', 'noopener');
+        if(!win) toast('Izinkan popup untuk mengunduh ulang.', 'warn');
+        return;
+      }
+    }catch(e){}
+    toast('Gagal membuka file. Aset mungkin sudah dihapus.', 'bad');
     return;
   }
   if(h.csv==null){ toast('Data file ini tidak lagi tersimpan di perangkat ini.', 'warn'); return; }
@@ -1869,8 +1905,12 @@ async function redownloadExport(h){
 
 async function deleteExportHistoryEntry(h, idx){
   if(exportHistoryMode==='cloud' && h.id){
-    try{ await dbNS.doc('exports/'+h.id).delete(); }catch(e){ toast('Gagal menghapus riwayat.', 'bad'); return; }
-    if(h.assetId && assetsNS){ try{ await assetsNS.delete(h.assetId); }catch(e){} }
+    try{
+      var del = await sb.from('exports').delete().eq('id', h.id);
+      if(del.error) throw del.error;
+    }catch(e){ toast('Gagal menghapus riwayat.', 'bad'); return; }
+    if(h.storagePath){ try{ await sb.storage.from('exports').remove([h.storagePath]); }catch(e){} }
+    refreshExportHistory();
   } else {
     exportHistory.splice(idx, 1);
     saveExportHistoryLocal();
@@ -1891,11 +1931,16 @@ document.getElementById('exportHistoryList').addEventListener('click', function(
 async function recordExportHistory(filename, csv){
   var by = staffName || ('Perangkat ' + deviceId.slice(2,6));
   var createdAt = new Date().toISOString();
-  var sizeBytes = new Blob([csv]).size;
+  var blob = new Blob([csv], {type:'text/csv'});
+  var sizeBytes = blob.size;
   if(exportHistoryMode==='cloud'){
     try{
-      var up = await assetsNS.upload(new Blob([csv], {type:'text/csv'}), {type:'text/csv'});
-      await dbNS.collection('exports').add({ filename: filename, assetId: up.id, sizeBytes: up.sizeBytes||sizeBytes, createdAt: createdAt, by: by });
+      var path = deviceId + '/' + Date.now() + '_' + filename;
+      var up = await sb.storage.from('exports').upload(path, blob, {contentType:'text/csv'});
+      if(up.error) throw up.error;
+      var ins = await sb.from('exports').insert({ filename: filename, storage_path: path, size_bytes: sizeBytes, created_at: createdAt, by: by });
+      if(ins.error) throw ins.error;
+      refreshExportHistory();
       return;
     }catch(e){ console.warn('export history cloud save failed, falling back to local', e); }
   }
@@ -1915,6 +1960,18 @@ document.getElementById('resetBtn').addEventListener('click', function(){
   document.getElementById('rstCancel').addEventListener('click', function(){ host.innerHTML=''; });
   document.getElementById('rstBack').addEventListener('click', function(e){ if(e.target.id==='rstBack') host.innerHTML=''; });
   document.getElementById('rstConfirm').addEventListener('click', function(){ host.innerHTML=''; resetLiveSession(); });
+});
+
+document.getElementById('dashResetDbBtn').addEventListener('click', function(){
+  var host = document.getElementById('modalHost');
+  host.innerHTML = '<div class="modal-back" id="rdbBack"><div class="modal-box">' +
+    '<h3>Kosongkan Database Produk?</h3>' +
+    '<p>Database produk saat ini (<strong>'+fmtNum(ITEMS.length)+' SKU</strong>) akan <strong>dikosongkan</strong>. Progres scan yang sedang berjalan (baseline maupun live) juga akan ikut direset karena tidak ada lagi produk yang cocok. Tindakan ini tidak dapat dibatalkan — setelah ini Anda perlu mengimpor file Excel baru dari tab Impor Database.</p>' +
+    '<div class="modal-actions"><button class="btn" id="rdbCancel">Batal</button><button class="btn btn-danger" id="rdbConfirm">Kosongkan</button></div>' +
+  '</div></div>';
+  document.getElementById('rdbCancel').addEventListener('click', function(){ host.innerHTML=''; });
+  document.getElementById('rdbBack').addEventListener('click', function(e){ if(e.target.id==='rdbBack') host.innerHTML=''; });
+  document.getElementById('rdbConfirm').addEventListener('click', function(){ host.innerHTML=''; resetProductDatabase(); });
 });
 
 document.getElementById('themeBtn').addEventListener('click', function(){
@@ -2038,8 +2095,9 @@ function buildPublishHtml(newData){
   return '<!doctype html>\n' + newDoc;
 }
 
-async function applyImport(newItems, sourceName){
-  setImportStatus('Menghapus progres scan lama…', 'busy');
+async function applyImport(newItems, sourceName, opts){
+  opts = opts || {};
+  setImportStatus(opts.isReset ? 'Mengosongkan database produk…' : 'Menghapus progres scan lama…', 'busy');
   try{ await resetLiveSession(); }catch(e){}
 
   ITEMS = newItems;
@@ -2050,10 +2108,10 @@ async function applyImport(newItems, sourceName){
   invState.category = 'all'; invState.page = 1; invState.search=''; invState.status='all';
   var el = document.getElementById('invSearch'); if(el) el.value='';
 
-  var newData = { items: newItems, baselineScans: [], generatedAt: new Date().toISOString(), auditTitle: extractStoreCodeFromFilename(sourceName) || 'Audit Stok', auditDate: new Date().toISOString().slice(0,10), sourceFile: sourceName };
+  var newData = { items: newItems, baselineScans: [], generatedAt: new Date().toISOString(), auditTitle: opts.isReset ? '' : (extractStoreCodeFromFilename(sourceName) || 'Audit Stok'), auditDate: new Date().toISOString().slice(0,10), sourceFile: sourceName };
   DATA = newData;
 
-  setImportStatus('Menyimpan database baru…', 'busy');
+  setImportStatus(opts.isReset ? 'Menyimpan status kosong…' : 'Menyimpan database baru…', 'busy');
   var publishedForAll = false;
   try{
     var artifactNS = window.claude && window.claude.use ? await window.claude.use('artifact') : null;
@@ -2068,21 +2126,25 @@ async function applyImport(newItems, sourceName){
 
   if(publishedForAll){
     DATA_SOURCE = 'publikasi';
-    setImportStatus('Database berhasil diperbarui untuk semua pengguna. Halaman akan dimuat ulang…', 'ok');
-    toast('Impor berhasil, ' + fmtNum(newItems.length) + ' produk tersimpan.', 'ok');
+    setImportStatus(opts.isReset ? 'Database berhasil dikosongkan untuk semua pengguna. Halaman akan dimuat ulang…' : 'Database berhasil diperbarui untuk semua pengguna. Halaman akan dimuat ulang…', 'ok');
+    toast(opts.isReset ? 'Database produk dikosongkan.' : ('Impor berhasil, ' + fmtNum(newItems.length) + ' produk tersimpan.'), 'ok');
     return; // the artifact capability reloads every open view automatically
   }
 
   DATA_SOURCE = 'lokal';
   try{ localStorage.setItem('audit_master_override_v1', JSON.stringify(newData)); }catch(e){}
-  setImportStatus('Database diperbarui, tapi hanya tersimpan di perangkat/browser ini (tidak ada akses publikasi bersama di tampilan ini).', 'warn');
-  toast('Impor berhasil (lokal): ' + fmtNum(newItems.length) + ' produk.', 'ok');
+  setImportStatus(opts.isReset ? 'Database produk dikosongkan, tapi hanya tersimpan di perangkat/browser ini (tidak ada akses publikasi bersama di tampilan ini).' : 'Database diperbarui, tapi hanya tersimpan di perangkat/browser ini (tidak ada akses publikasi bersama di tampilan ini).', 'warn');
+  toast(opts.isReset ? 'Database produk dikosongkan (lokal).' : ('Impor berhasil (lokal): ' + fmtNum(newItems.length) + ' produk.'), 'ok');
   updateDashSub();
   updateHistSub();
   recomputeAll();
   renderCatChips();
   renderActiveTab();
   updateCurrentDbInfo();
+}
+
+async function resetProductDatabase(){
+  await applyImport([], null, {isReset:true});
 }
 
 function showImportPreview(parsed, file){
