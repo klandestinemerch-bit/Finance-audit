@@ -710,7 +710,7 @@ table.data tbody tr:last-child td{ border-bottom:none; }
             <tr>
               <th>Kode</th><th>Nama Barang</th><th>Kategori</th>
               <th style="text-align:right;">Qty Sistem</th><th style="text-align:right;">Qty Real</th>
-              <th style="text-align:right;">Selisih</th><th style="text-align:right;">Nilai Selisih</th><th>Status</th>
+              <th style="text-align:right;">Selisih</th><th style="text-align:right;">Nilai Satuan</th><th style="text-align:right;">Nilai Selisih</th><th>Status</th>
             </tr>
           </thead>
           <tbody id="invTbody"></tbody>
@@ -1657,7 +1657,7 @@ function renderInventory(){
 
   var tbody = document.getElementById('invTbody');
   if(!pageItems.length){
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty">Tidak ada barang yang cocok dengan filter.</div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9"><div class="empty">Tidak ada barang yang cocok dengan filter.</div></td></tr>';
     return;
   }
   tbody.innerHTML = pageItems.map(function(it){
@@ -1671,6 +1671,7 @@ function renderInventory(){
       '<td class="td-num">'+fmtNum(it.q)+'</td>' +
       '<td class="td-num">'+fmtNum(sq)+'</td>' +
       '<td class="td-num">'+gapCell+'</td>' +
+      '<td class="td-num">'+fmtRp(it.v||0)+'</td>' +
       '<td class="td-num">'+valCell+'</td>' +
       '<td><span class="badge badge-'+st+'">'+STATUS_LABEL[st]+'</span></td>' +
     '</tr>';
