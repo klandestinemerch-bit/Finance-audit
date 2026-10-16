@@ -1184,6 +1184,16 @@ async function loadInitialProducts(){
     DATA_SOURCE = 'cloud';
     rebuildItemIndex();
     rebuildCategories();
+    /* this runs before the IIFE's own init block (renderCatChips/recomputeAll/
+       renderActiveTab/updateDashSub/updateCurrentDbInfo), which still fires
+       afterwards and will reflect this data — but refresh explicitly too in
+       case the cloud fetch resolves after that first paint. */
+    invState.category = 'all'; invState.page = 1;
+    recomputeAll();
+    renderCatChips();
+    renderActiveTab();
+    updateDashSub();
+    updateCurrentDbInfo();
   }
   /* if the cloud catalog is still empty, keep whatever local/baked-in
      default is already loaded rather than wiping it — the next import
