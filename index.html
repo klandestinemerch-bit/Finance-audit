@@ -1046,6 +1046,7 @@ function updateCurrentDbInfo(){
   var countText = fmtNum(ITEMS.length) + ' SKU';
   var srcLabel;
   if(ITEMS.length===0) srcLabel = 'Kosong — belum ada data produk';
+  else if(DATA_SOURCE==='cloud') srcLabel = (DATA.sourceFile ? 'Diimpor dari ' + DATA.sourceFile : 'Database produk') + ' — live, sama di semua perangkat';
   else if(DATA_SOURCE==='lokal') srcLabel = 'Impor (' + (DATA.sourceFile||'file') + ') — tersimpan di perangkat ini saja';
   else if(DATA.sourceFile) srcLabel = 'Diimpor dari ' + DATA.sourceFile + ' — tersimpan untuk semua pengguna';
   else srcLabel = branchLabel();
@@ -1164,6 +1165,74 @@ function subscribeRealtime(){
   }catch(e){ console.warn('realtime subscribe failed', e); }
 }
 
+function deviceLabel(){ return staffName || ('Perangkat ' + deviceId.slice(2,6)); }
+
+/* ============ PRODUCT DATABASE (cloud-synced master catalog) ============ */
+/* "Database Produk" (the imported Excel SKU catalog) is kept in Supabase too,
+   so importing or resetting it on one device updates it for every device —
+   not just the live scan activity. products_meta is a single-row table the
+   client subscribes to: one small row changing is a cheap signal that the
+   whole catalog was replaced, instead of broadcasting thousands of
+   row-level events for a multi-thousand-SKU import. */
+async function loadInitialProducts(){
+  var res = await sb.rpc('get_products');
+  if(res.error) throw res.error;
+  var cloudItems = res.data || [];
+  if(cloudItems.length > 0){
+    ITEMS = cloudItems;
+    DATA = { items: cloudItems, baselineScans: [], generatedAt: new Date().toISOString(), auditTitle: DATA.auditTitle, auditDate: DATA.auditDate, sourceFile: DATA.sourceFile };
+    DATA_SOURCE = 'cloud';
+    rebuildItemIndex();
+    rebuildCategories();
+  }
+  /* if the cloud catalog is still empty, keep whatever local/baked-in
+     default is already loaded rather than wiping it — the next import
+     on any device will seed the cloud for everyone. */
+}
+
+var productsRefreshTimer = null;
+function scheduleProductsRefresh(skipToast){
+  if(productsRefreshTimer) clearTimeout(productsRefreshTimer);
+  productsRefreshTimer = setTimeout(function(){
+    productsRefreshTimer = null;
+    refreshProductsFromCloud(skipToast);
+  }, 300);
+}
+async function refreshProductsFromCloud(skipToast){
+  if(storeMode!=='db') return;
+  try{
+    var res = await sb.rpc('get_products');
+    if(res.error) throw res.error;
+    var cloudItems = res.data || [];
+    ITEMS = cloudItems;
+    DATA = { items: cloudItems, baselineScans: DATA.baselineScans||[], generatedAt: new Date().toISOString(), auditTitle: DATA.auditTitle, auditDate: DATA.auditDate, sourceFile: DATA.sourceFile };
+    DATA_SOURCE = 'cloud';
+    rebuildItemIndex();
+    rebuildCategories();
+    invState.category = 'all'; invState.page = 1;
+    recomputeAll();
+    renderCatChips();
+    renderActiveTab();
+    updateDashSub();
+    updateCurrentDbInfo();
+    if(!skipToast) toast('Database produk diperbarui oleh perangkat lain.', 'ok');
+  }catch(e){ console.warn('refresh products failed', e); }
+}
+function subscribeProductsRealtime(){
+  try{
+    sb.channel('audit-live-products')
+      .on('postgres_changes', {event:'UPDATE', schema:'public', table:'products_meta'}, function(payload){
+        var fromSelf = payload.new && payload.new.updated_by === deviceLabel();
+        scheduleProductsRefresh(fromSelf);
+      })
+      .subscribe();
+  }catch(e){ console.warn('products realtime subscribe failed', e); }
+}
+async function pushProductsToCloud(items){
+  var res = await sb.rpc('replace_products', { p_items: items, p_by: deviceLabel() });
+  if(res.error) throw res.error;
+}
+
 async function recordScan(item, source, qtyToAdd){
   qtyToAdd = qtyToAdd || 1;
   var now = new Date().toISOString();
@@ -1229,6 +1298,8 @@ async function initStore(){
     await loadInitialLiveData();
     subscribeRealtime();
     storeMode = 'db';
+    try{ await loadInitialProducts(); subscribeProductsRealtime(); }
+    catch(e2){ console.warn('cloud product catalog unavailable, keeping local/baked-in catalog.', e2); }
   }catch(e){
     console.warn('Supabase live sync unavailable, falling back to local mode.', e);
     sb = null; storeMode = 'local'; loadLocalFallback();
@@ -2112,6 +2183,26 @@ async function applyImport(newItems, sourceName, opts){
   DATA = newData;
 
   setImportStatus(opts.isReset ? 'Menyimpan status kosong…' : 'Menyimpan database baru…', 'busy');
+
+  if(storeMode==='db'){
+    try{
+      await pushProductsToCloud(newItems);
+      DATA_SOURCE = 'cloud';
+      setImportStatus(opts.isReset ? 'Database produk dikosongkan untuk semua perangkat.' : 'Database berhasil diperbarui untuk semua perangkat.', 'ok');
+      toast(opts.isReset ? 'Database produk dikosongkan (semua perangkat).' : ('Impor berhasil, ' + fmtNum(newItems.length) + ' produk tersimpan untuk semua perangkat.'), 'ok');
+      updateDashSub();
+      updateHistSub();
+      recomputeAll();
+      renderCatChips();
+      renderActiveTab();
+      updateCurrentDbInfo();
+      return;
+    }catch(e){
+      console.warn('cloud product sync failed, falling back to local-only save.', e);
+      setImportStatus('Gagal menyimpan ke cloud (jaringan). Menyimpan secara lokal saja…', 'warn');
+    }
+  }
+
   var publishedForAll = false;
   try{
     var artifactNS = window.claude && window.claude.use ? await window.claude.use('artifact') : null;
