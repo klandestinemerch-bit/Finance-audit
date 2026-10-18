@@ -4,14 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Audit Stok MFlash</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAMAAABrrFhUAAAAkFBMVEUHMF5hZWwIYGQuSGYYOl8CBGv4bAUdOVnScSjjcx4nRWftcxWeclidk4yyaCn/BQDz4ar//wD+gRL//vgABv8LOz53cQ1lc4nVr5txIxOkjXjdo3EHauv/qgAA//9JWXEXZKrReVn/73ocQWu0HwAA/wD/f//KgkozZjNVAFVmmbuGeIbJfUAAAAAGMF39eA8lnFvQAAAAMHRSTlP6GQlcpgQIZmOildQbGhoBCQH+AgEEAyQNAxASBQMBSQ4oA9gDAQJPBQMPE0cA/v5IijbJAAAP30lEQVR42u2dh3rjOA6ASapYzZZbEqdMkim7Vym//9sdwSaqWZRiZZwb8NtNPHGK8QsA0SgT/ocvggAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAE4K7X4+v0Hyp3u/L/AABj5lHEqO8P7eJvcWke3X9hACySn7brYn3QEDx+Ko7lpwdK35UqxOXXBADCrlmQhYSQioRZQAWFKBoTX/xfJEma5+dznqdpUugvfjUAIH4AsrsrEFYQjYj/kqTn835/hiU/pgn9RATXAhBZ8Suz5D/CiwhifkxyJba78uT90whcTQNoWAnZa/ENg2r1gw94AmHqm/zcu/KY73ZfB4AQMGhefReBUIJeAvdC+8+DK4Fv+CIAGP+Rgd/rJQAMAn7XJz9Nh+U/79OHTyFwBQCUr0MiBVX/dwlUQdcPjMgPBOhnECDXkP+nlp/0AxCrQ6DcjcgPBN7L8vYBHPlW679SgarfCtp+ID6OyQ8EjvHtA4i2ZvO30veaQdHQgZgnZ4+VLL8bkg87wMBEPRflJ6GrAp7yA4HNbQNw5B8y/3orsATKmOZ+APKivL9lAIzTSin/OIGqdgMxT/3k/wQ3QK7hACrXAgYJWCPY+BrAZ7gB8jEFWCnBSVWNyS++IeBU5fy+BiDXZlkC5GMOoDLuf1R8WFTuBP4GoNwAXbQ+QD7kAGrTJ12bH9gJYl5MkV+4gUVVgHzYAVzwfaSdGYqdoNwV+X4SgWXdwHwAd2YHHFZ/h46MEyEgvOdFfp64igWTAjLfAJgNgMklBSAODRLuoo2wgXSiEbws5wbIRxyAlqrycYFKW7KdupbpNCtY0A3MBRDxsHFpfTYBaQJ8k4jotjhPdQOb2wIAIXBt3ZVHGEBULAQxUL4pp+2ES4bE5CMG4BAgFwTXkQK4gJLnUqN3EwEstxfOAxCt3ervyNWvTaXKOFz6fcKnasByeyGZpwBhX/wzHgyTk9gB8vR9sg8QK17GDZCZDsDP6/WkA1BDKsvpsYAIiXf3twFA5sDtS07GbUB6guCg8uHNZAALuYEZAKLTYALgsxMGQUAhI95PJrCIGyAfcAB+ErecJPxoxu+mpIS2cbgEATLDAVRkpguwcVPAqb8bSNMkSf5RPP9XRFDlbwegi2AfQqCTIh83kCaxO2bB/IculgLgVsFHKwCDzxCyjsYLY3kKswL8sf0S6OvvA8B4RsaSYK/aQMjvvl12A3nyoIV/osJxrrJMfHyjT5IB+00AbBHMGwAZ6hME/J+7C24gT16gesrXgTt1IZvNWVBckcEkAFSkAKq08xEP4OMGkqOsgdCM1MBJZUFkwWlk9GQZANEh1HmNbwB8wS+Q50E3IGw/fhQX33E27uCJBJFRztknA3By4G6po7P5j6pANuQG5GzENrC/lLRSKt2Hvw4CMsUAAtJWAFITIM1gZzQ6hhLp467bIshlIyBwfikhuqbq/HbJIbgCAX8AkayCdxNAY5t+VuGgATcghO2UPsQXnzLidNzqB+0hrJB+2BOQSQ6gx/+RaXERca4lCbcdN5CDb6T279Ryh2H4kzRhq0L7ZwFgjlaSVo5H2tMhZHBWhDibCLx8cAP7lvwBaVaSxe4vJ08Phyf6FmTGIPSGsP2YEhBv+WljBNK9ODWBi/0h0k6M5AW8c92A0H/paYzpkyoMHtovZe1EBhBSPX/IERBfB1CQ/lWRZgfkkhNoZ4baDWycDsgjX5nfpvc6AZ/aDIBSKayOD7QhPfPjJwAICRlE0LaBkQopaYTEjhtIlP5bs6dS+vZreQUGMJdJtEkJAksDaAyCuGK74ZlXe6STFAgjiF9S3f7Y6J2WaP82FO9SYfZv+o+DDhyiZQHUObCV2frz5tfHw59WuxQGRx55AfPC+fsv7f/MkPEF2xYITnY2WcRUbFkNKBpiinQkoLDeRKYSNjbpi1XCvmFSUmfGG/4vSoxeC+fOxuIyyMysM2ULAmC1A6hIQNetFyKccuUzKOWoTjszhk5RKjTB/p2VR4z3GkkC6o/TuQSIlwMwwU4IZyD4L+fJe8jYn4KwGidAeodpZYHsrqTppqwjjZXf3n5Xu6bZboD4OwBplr9A4JfiewIrLqgp2dBwPCIkQ5MjcPmY02/OfGMbIKA90VwjGAdgQmAQX4j6Eidp7pat4IwL6IFBMKUypFcIZwd0tRmE2U6b0lDK9cT/WgSA2QGZFH+T5H2Vy6NEsOpzch71AVIx2O6p2UrEw7iEg2Tx4JmJe/E0/MeZLVHMVAEybgDSxLZQodn0F/H251wg2Ih0MTSp6oDEA/+CcMiGWtM8un598Ecf+OsiAFbSTQkdFeLvL9TwZBUjtL5+UAN6jUSYFzUp7iE68EStgUbATmiieb6O0eapwAiAv/iDLt+9XxJf17E23GwYVR+Cvj1Au0Gx7emZS8GiMLHxUDtwx2HQbL/fi+Tpe/RsdoLnBUxA8pUJy2gfZy+UYHcnR6dqCORyWdA+GXAjhtgB5Cx5CivuHw/b8UQ+LcdIdaFubjQ0ZgJbJb/fcG96hLRxfaKZT/eU1ApACunNdUTzjSfi2tcBj/58MP8wX3jJRfooVEQ3a8GTXBsAJOcgf+rbwd7sVB9nVQ0MUDfKKLZ4KPbB0AQ0nAsA5/TvsiyHW6Elj8uS5rJ+aL1AVczIi8mYBTB/+XUHe7MRVyLrCQmaZ0rcExYBaFplPJkEwJ8PfHc6iQu/FmHB6cC38HkrHnDxQDxx4Mf8rABQ54evbQKUT5roKrhIbWFHCHpqJG6ly/WVkBFSPUpFFYB9+iLECSD8ECgLRlbPIZQQwV0GP0kRkHUYcm0CfKerldkMGxgNhH5Nmmd6ktM/+Qt/q3p6Gq70to6mLCDQiSb8SQngvcpgY1hx8WUakNVaPH+SAIS0dEXEvw8aADNVtHCBOCCecrjBBTBYHmgWFiWglXUBgZonj/PkgVgAxADYRlUFACq6qoQGHFKx9ZZmaE+Fw9cGMHWYJ4lfEjj46xylaowIkbqKbp2grP2E6hljxS9cAwhcDdiulAZoAE6dVEeglNNrA3iZNs6Vij26eBcJMukAcIfGw1A1ffUQJZM7GTzWaX1Z7voBNDSgnhw4qDyKvF0bwEQDUH09kTMcn0KnTEZaA/S60k1tmYHKeFOdLjxq36sAVKtLAGqXl83eBi4CKGfM9ufFYePsTKR7agIu0jOFHj+1AKiubdWbj48GRG7XdmZGSK6rAHKseVcn0RVpRz4wMC4jxfCNq/QR4kCqjbgXAGkDIC0Ad6aYOmMfvDoAtTPbOmKnAggdXZu+8R+SAB0EUPVqAOnRAOlMrg3gfvpMrxnlq1tJnemo+qSFIHDIBKIHXw2IPhmAzDdmHu2wpVS3HQDJnnFYakhEpsEgrvq+eRpwZxLC7Mo+YOoRv7N7uMcW051DFXBFD3XrD7wf1LaZUpeqTukvO0HSigOipXaBaYdcW+c6XsG1t8I+uKJrGyJDVMPEqw8o/6EdBm1tg8RLA6RWKQdz5Tig5JNOuTZH+ut+Qh0OEZn3GQ1QLziqTyCJkIjN2AZVLqmSqquHwul0B9jbUdJ99ExFvdYEXqUGSwCuDn8vAUDWBdAIhR9jO71HTFb5G3OBTgEv6vZU4cwItRmBvbOIVZbajT9UAKC6kAuQRt1O/vxhiWzQ94hfTjtlfNcIjD8I6kQp+9EYwJLfoPI5mmwequY2ePopAAQAQGChmdSAzab2gdWUjtIEABtvFSh6Kri6q+RshyoSlE2kwL1eB2I6XFTXA7rbYHVaKQBEA8hzdaj2SbvVJSpC3l6g9zCDM1lk7jGgLjJl9NRxF7IrIC6iA8AJhMQP64JIVT0IEyDhQVFnpj1W0SUA3JeFnwMox0ZLbIucqhtLRY3vY9oG1ioCT4+B+NpqJT6IBzRgO7aCz/Kr7MCCA4ueFIDIhbdAc9QrFhg83hz9cM/Y6yCY8oiyVgH3mZitnEkAf3NeXNZMkaoKE4h1PRFGF5boC/gZQT5416v6LgvEqQcL93/sacGpgRHQAN0XgJkwBnfplJ8jdcfOo7lt57/PsjPETWnlac60mM+EyCiBvBg+zSRUttUF0ANQrDuFoEMBOFKWP39/fi4G47OH72L9A0yA2vGFbIneoPp7u5GzHcUlba37FhWpJ2s74436QoLPf7Rn6pKh3qDZm4t6gK+iiwEAAhf8QEovn2ar77VSz0kR6wq7blDs5psc1uCpeX1B8jyldzYICueNzPpNiQGBfLgKGI91WJkpgJo5IR0Q9AfOwj7ei4LS4uFCwwaWLqu179O0AACQkfYqQbrxuPdlxJ9Wthhe90ZW6+4skpbFGvvYqzK55YIzQnY35EXnBqhp4nf/V3DiYZ0Umcmudd9GoM1jB2v4N8qnqXYAspYULQyAQ6/2fVNPSOUp3Auj9DzMKuyTrkJbKYbr30ncoufQmIhXWidCicyeoAmgMBSxBQHAPbDg4zst4lgPyMX+R/rlXadpsAph6Zsu98YM/Tdg7FWrQ+ikWeGpHV5eHQBc72/1FY/jaef5WfPF9dxzmunhV+UiR25KHcGtTIm9iQscrAjD6aeIpp8eL8t4I2SfdYw5YpFajA1c1JXtGF6WhXF9sIbUZ6j0DsIWBrDosu2ESh0XYK9D4m8Dp71KnMMDtO8evl8GAI9OWX0gJ1iD0rQDfKk9gVNieAvr/pMsrEbHrwvglR8yJ20I9JkZRo8q+pGOZBuEzllaqu5rW9kgc5IZ3NxbbBz1sIQ5M5wFzWiBb2lQHydW3pLLgRTn3pVrfwK39x4jB6Xfdcxcwbm5h6ftdrtWp+bcGmMGstJo3bpNh/+Bylt8k5VIz/86DYTuqRSFyGh70ZpO9TeDm3yXGcZPmRW/ap/JqTvtsE8cFTJnKk23Cbd+BG7zbXaYniHonpuubUNGCpH1HI1bu8i5UT8zuNX3GYpM8dw9Z2QGkNU81drVcjOr79YevczgZt9oyZ6ObJUUjV/ctqRjXN/jeKIZ3PA7TcFr/08QNo8pg2ihjA5Y99sD1wp0WMi+LgCdPp2oSHJseBwG6iwtG9w9HHMRD99uRwMe6YybwR1NCrmGEth66wTDvTrz1DninNFbAACvHuJZOudGULSRRzN2vGg1Qdha7PJm8FXebe4Ia/xQ1LXPC3zBxaI7d0V3fxqAP14DEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAAfxJ63+JwRYX9rAFcgAAAABJRU5ErkJggg==">
 <style>
 :root{
-  --bg-grad:radial-gradient(1100px 650px at 14% -8%, rgba(99,102,241,.16) 0%, transparent 60%),
-            radial-gradient(900px 620px at 108% 8%, rgba(236,72,153,.12) 0%, transparent 55%),
+  --bg-grad:radial-gradient(1100px 650px at 14% -8%, rgba(99,102,241,.24) 0%, transparent 62%),
+            radial-gradient(900px 620px at 108% 8%, rgba(236,72,153,.19) 0%, transparent 58%),
+            radial-gradient(820px 600px at 40% 112%, rgba(10,147,180,.16) 0%, transparent 56%),
             linear-gradient(180deg, #F3F4FC 0%, #ECEEFA 100%);
   --bg-solid:#EEF0FA;
-  --surface:rgba(255,255,255,.72); --surface-2:rgba(255,255,255,.5); --surface-3:rgba(20,22,50,.06);
-  --glass-border:rgba(30,32,70,.09); --glass-hi:rgba(255,255,255,.9);
+  --surface:rgba(255,255,255,.58); --surface-2:rgba(255,255,255,.38); --surface-3:rgba(20,22,50,.07);
+  --glass-border:rgba(30,32,70,.11); --glass-hi:rgba(255,255,255,.95);
   --ink:#181B3A; --ink-dim:#4E526E; --ink-faint:#82869F; --line:rgba(30,32,70,.10);
   --accent:#0A93B4; --accent-glow:#22D3EE; --accent-ink:#FFFFFF; --accent-soft:rgba(10,147,180,.10); --accent-line:#0A93B4;
   --violet:#7C5CE0; --pink:#D6469B;
@@ -21,23 +23,24 @@
   --neutral:#82869F; --neutral-soft:rgba(30,32,70,.06);
   --shadow:0 18px 40px -18px rgba(24,27,58,.28), 0 2px 6px rgba(24,27,58,.06);
   --shadow-sm:0 8px 20px -10px rgba(24,27,58,.28);
-  --glow:0 0 0 1px var(--glass-border), 0 18px 40px -18px rgba(24,27,58,.22);
+  --glow:0 0 0 1px var(--glass-border), 0 18px 40px -18px rgba(24,27,58,.22), inset 0 1px 0 rgba(255,255,255,.65);
   --border-w:1px;
-  --radius-s:10px; --radius-m:16px; --radius-l:20px;
-  --blur:18px;
+  --radius-s:12px; --radius-m:18px; --radius-l:24px;
+  --blur:28px;
   --font-display:'Poppins',"Segoe UI",sans-serif;
   --font-body:'Inter',system-ui,-apple-system,sans-serif;
   --font-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg-grad:radial-gradient(1200px 720px at 12% -10%, rgba(34,211,238,.16) 0%, transparent 55%),
-              radial-gradient(1000px 680px at 100% 0%, rgba(167,139,250,.16) 0%, transparent 55%),
-              radial-gradient(900px 700px at 50% 120%, rgba(244,114,182,.10) 0%, transparent 55%),
+    --bg-grad:radial-gradient(1200px 720px at 12% -10%, rgba(34,211,238,.26) 0%, transparent 58%),
+              radial-gradient(1000px 680px at 100% 0%, rgba(167,139,250,.24) 0%, transparent 58%),
+              radial-gradient(900px 700px at 50% 120%, rgba(244,114,182,.17) 0%, transparent 58%),
+              radial-gradient(700px 520px at 78% 62%, rgba(13,148,136,.14) 0%, transparent 55%),
               linear-gradient(180deg, #0B0E28 0%, #0A0C22 100%);
     --bg-solid:#0B0E28;
-    --surface:rgba(255,255,255,.05); --surface-2:rgba(255,255,255,.035); --surface-3:rgba(255,255,255,.08);
-    --glass-border:rgba(255,255,255,.10); --glass-hi:rgba(255,255,255,.16);
+    --surface:rgba(255,255,255,.07); --surface-2:rgba(255,255,255,.05); --surface-3:rgba(255,255,255,.09);
+    --glass-border:rgba(255,255,255,.13); --glass-hi:rgba(255,255,255,.24);
     --ink:#F3F5FF; --ink-dim:#A9AEDB; --ink-faint:#6F73A3; --line:rgba(255,255,255,.09);
     --accent:#22D3EE; --accent-glow:#22D3EE; --accent-ink:#04222B; --accent-soft:rgba(34,211,238,.14); --accent-line:#22D3EE;
     --violet:#A78BFA; --pink:#F472B6;
@@ -47,17 +50,18 @@
     --neutral:#6F73A3; --neutral-soft:rgba(255,255,255,.06);
     --shadow:0 22px 50px -18px rgba(0,0,0,.55), 0 2px 10px rgba(0,0,0,.35);
     --shadow-sm:0 10px 24px -10px rgba(0,0,0,.5);
-    --glow:0 0 0 1px var(--glass-border), 0 0 32px -6px rgba(34,211,238,.35), 0 18px 40px -18px rgba(0,0,0,.5);
+    --glow:0 0 0 1px var(--glass-border), 0 0 32px -6px rgba(34,211,238,.3), 0 22px 50px -20px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.16);
   }
 }
 :root[data-theme="dark"]{
-  --bg-grad:radial-gradient(1200px 720px at 12% -10%, rgba(34,211,238,.16) 0%, transparent 55%),
-            radial-gradient(1000px 680px at 100% 0%, rgba(167,139,250,.16) 0%, transparent 55%),
-            radial-gradient(900px 700px at 50% 120%, rgba(244,114,182,.10) 0%, transparent 55%),
+  --bg-grad:radial-gradient(1200px 720px at 12% -10%, rgba(34,211,238,.26) 0%, transparent 58%),
+            radial-gradient(1000px 680px at 100% 0%, rgba(167,139,250,.24) 0%, transparent 58%),
+            radial-gradient(900px 700px at 50% 120%, rgba(244,114,182,.17) 0%, transparent 58%),
+            radial-gradient(700px 520px at 78% 62%, rgba(13,148,136,.14) 0%, transparent 55%),
             linear-gradient(180deg, #0B0E28 0%, #0A0C22 100%);
   --bg-solid:#0B0E28;
-  --surface:rgba(255,255,255,.05); --surface-2:rgba(255,255,255,.035); --surface-3:rgba(255,255,255,.08);
-  --glass-border:rgba(255,255,255,.10); --glass-hi:rgba(255,255,255,.16);
+  --surface:rgba(255,255,255,.07); --surface-2:rgba(255,255,255,.05); --surface-3:rgba(255,255,255,.09);
+  --glass-border:rgba(255,255,255,.13); --glass-hi:rgba(255,255,255,.24);
   --ink:#F3F5FF; --ink-dim:#A9AEDB; --ink-faint:#6F73A3; --line:rgba(255,255,255,.09);
   --accent:#22D3EE; --accent-glow:#22D3EE; --accent-ink:#04222B; --accent-soft:rgba(34,211,238,.14); --accent-line:#22D3EE;
   --violet:#A78BFA; --pink:#F472B6;
@@ -67,7 +71,7 @@
   --neutral:#6F73A3; --neutral-soft:rgba(255,255,255,.06);
   --shadow:0 22px 50px -18px rgba(0,0,0,.55), 0 2px 10px rgba(0,0,0,.35);
   --shadow-sm:0 10px 24px -10px rgba(0,0,0,.5);
-  --glow:0 0 0 1px var(--glass-border), 0 0 32px -6px rgba(34,211,238,.35), 0 18px 40px -18px rgba(0,0,0,.5);
+  --glow:0 0 0 1px var(--glass-border), 0 0 32px -6px rgba(34,211,238,.3), 0 22px 50px -20px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.16);
 }
 *{box-sizing:border-box;}
 html{ background:var(--bg-solid); }
@@ -88,20 +92,20 @@ a{ color:var(--accent); }
   *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
 }
 
-.app{ display:flex; align-items:flex-start; min-height:100vh; }
+.app{ display:flex; align-items:flex-start; min-height:100vh; padding:18px; gap:18px; }
 
 /* ---------- Sidebar ---------- */
 .sidebar{
-  width:236px; flex:none; display:flex; flex-direction:column; gap:22px;
-  padding:22px 16px; position:sticky; top:0; align-self:flex-start; height:100vh;
-  border-right:var(--border-w) solid var(--glass-border);
+  width:220px; flex:none; display:flex; flex-direction:column; gap:22px;
+  padding:20px 14px; position:sticky; top:18px; align-self:flex-start; height:calc(100vh - 36px);
+  border:var(--border-w) solid var(--glass-border); border-radius:28px;
   background:var(--surface-2);
+  backdrop-filter:blur(var(--blur)); -webkit-backdrop-filter:blur(var(--blur));
+  box-shadow:var(--glow);
 }
 .brand{ display:flex; align-items:center; gap:10px; padding:4px 6px; }
 .brand-mark{
-  width:36px; height:36px; padding:7px; flex:none; box-sizing:border-box; color:var(--accent-ink);
-  background:linear-gradient(135deg, var(--accent-glow), var(--violet)); border-radius:12px;
-  box-shadow:0 0 22px -4px var(--accent-glow);
+  height:38px; width:auto; flex:none; display:block;
 }
 .brand-text{ display:flex; flex-direction:column; line-height:1; }
 .brand-kicker{ font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px; color:var(--ink-faint); text-transform:uppercase; }
@@ -171,14 +175,20 @@ section > h2.section-title{ font-size:20px; margin-bottom:2px; }
   background:var(--surface); border:var(--border-w) solid var(--glass-border); border-radius:var(--radius-l);
   box-shadow:var(--glow); backdrop-filter:blur(var(--blur)); -webkit-backdrop-filter:blur(var(--blur));
   position:relative; overflow:hidden;
+  transition:transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease, border-color .22s ease;
 }
 .card::before{
   content:""; position:absolute; inset:0 0 auto 0; height:1px;
   background:linear-gradient(90deg, transparent, var(--glass-hi), transparent); opacity:.6; pointer-events:none;
 }
+.card:hover{
+  transform:translateY(-4px);
+  border-color:var(--accent-line);
+  box-shadow:0 0 0 1px var(--accent-line), 0 26px 54px -20px rgba(0,0,0,.4), inset 0 1px 0 var(--glass-hi);
+}
 .kpi-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px; }
 @media (max-width:820px){ .kpi-grid{ grid-template-columns:repeat(2,1fr);} }
-.kpi{ padding:18px 20px; display:flex; flex-direction:column; gap:6px; min-width:0; }
+.kpi{ padding:22px 24px; display:flex; flex-direction:column; gap:7px; min-width:0; }
 .kpi-label{ font-size:11px; letter-spacing:.8px; text-transform:uppercase; color:var(--ink-faint); font-family:var(--font-mono); }
 .kpi-value{ font-family:var(--font-display); font-size:30px; font-weight:700; line-height:1.05; overflow-wrap:break-word; }
 @media (max-width:480px){ .kpi-value{ font-size:23px; } }
@@ -252,6 +262,9 @@ section > h2.section-title{ font-size:20px; margin-bottom:2px; }
 }
 .scan-input::placeholder{ color:var(--ink-faint); font-size:14.5px; letter-spacing:0; }
 .scan-input:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+.scan-input.collision{ border-color:var(--bad-line); box-shadow:0 0 0 3px var(--bad-soft); animation:collisionshake .35s ease; }
+@keyframes collisionshake{ 0%,100%{ transform:translateX(0); } 20%{ transform:translateX(-6px); } 40%{ transform:translateX(6px); } 60%{ transform:translateX(-4px); } 80%{ transform:translateX(4px); } }
+.multiscan-note{ font-size:11.5px; color:var(--ink-faint); margin-top:2px; }
 .scan-camera-btn{
   flex:none; width:52px; height:52px; border-radius:var(--radius-m); border:var(--border-w) solid var(--glass-border);
   background:var(--surface-3); color:inherit; display:flex; align-items:center; justify-content:center; cursor:pointer;
@@ -370,7 +383,7 @@ table.data tbody tr:last-child td{ border-bottom:none; }
 
 /* ---------- Modal ---------- */
 .modal-back{ position:fixed; inset:0; background:rgba(6,8,20,.55); backdrop-filter:blur(4px); z-index:90; display:flex; align-items:center; justify-content:center; padding:20px; }
-.modal-box{ background:var(--surface); border-radius:var(--radius-l); border:var(--border-w) solid var(--glass-border); max-width:480px; width:100%; padding:24px; box-shadow:var(--shadow); max-height:85vh; overflow-y:auto; backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); }
+.modal-box{ background:var(--surface); border-radius:var(--radius-l); border:var(--border-w) solid var(--glass-border); max-width:480px; width:100%; padding:24px; box-shadow:var(--shadow), inset 0 1px 0 var(--glass-hi); max-height:85vh; overflow-y:auto; backdrop-filter:blur(var(--blur)); -webkit-backdrop-filter:blur(var(--blur)); }
 .modal-box h3{ font-size:19px; margin-bottom:10px; }
 .modal-box p{ font-size:13.5px; color:var(--ink-dim); line-height:1.5; }
 .modal-actions{ display:flex; justify-content:flex-end; gap:8px; margin-top:18px; }
@@ -481,7 +494,7 @@ table.data tbody tr:last-child td{ border-bottom:none; }
   .main-col{ width:100%; }
   .sidebar{
     width:100%; height:auto; position:sticky; top:0; z-index:41; flex-direction:row; align-items:center; gap:14px;
-    padding:12px 14px; border-right:none; border-bottom:var(--border-w) solid var(--glass-border);
+    padding:12px 14px; border:var(--border-w) solid var(--glass-border); border-radius:22px;
   }
   .brand{ flex:none; }
   .brand-text h1{ font-size:17px; }
@@ -502,10 +515,7 @@ table.data tbody tr:last-child td{ border-bottom:none; }
 <div class="app">
   <aside class="sidebar">
     <div class="brand">
-      <svg class="brand-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="3" y="7" width="34" height="26" rx="3" stroke="currentColor" stroke-width="2"/>
-        <path d="M9 12v16M13 12v16M17 12v10M21 12v16M25 12v10M29 12v16M33 12v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+      <img class="brand-mark" src="data:image/png;base64,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" alt="MFlash">
       <div class="brand-text">
         <span class="brand-kicker">Audit Stok</span>
         <h1>MFlash</h1>
@@ -541,6 +551,7 @@ table.data tbody tr:last-child td{ border-bottom:none; }
 
     <div class="side-status">
       <button id="syncPill" class="pill side-pill"><span class="dot"></span><span id="syncPillLabel">Memuat…</span></button>
+      <button id="modeSwitchBtn" class="pill side-pill" style="margin-top:6px;" title="Ganti mode Admin/User"></button>
     </div>
   </aside>
 
@@ -646,6 +657,7 @@ table.data tbody tr:last-child td{ border-bottom:none; }
           </button>
         </div>
         <span class="scan-hint" id="scanHint">Siap menerima scan. Tekan Enter setelah mengetik kode secara manual.</span>
+        <span class="multiscan-note">Boleh pasang beberapa scanner USB/Bluetooth sekaligus di komputer/perangkat ini — semua akan masuk ke kolom yang sama. Kalau 2 scanner dipencet nyaris bersamaan, sistem otomatis mendeteksi &amp; membuang hasil yang tabrakan (bunyi beep ganda), tinggal scan ulang.</span>
       </div>
 
       <div style="margin-top:16px;">
@@ -930,13 +942,29 @@ function setTheme(mode){
 var PRISTINE_HTML = document.documentElement.outerHTML
   .replace(/^(<html\b[^>]*?)\s+data-theme="[^"]*"([^>]*>)/, '$1$2');
 
+/* ============ APP MODE (Admin / User) ============ */
+/* Two ways to use this app on a given browser/device: "admin" (unchanged,
+   full feature set, live Supabase sync for everyone) and "user" (only
+   Scan + Impor, PIN-free, and strictly local to this browser — never
+   synced to the cloud, never visible on another device or in Admin's
+   Dashboard/Riwayat). The choice is asked once per browser and remembered
+   in localStorage; "Ganti Mode" clears it so it can be asked again. */
+var ADMIN_PIN = '192837';
+var APP_MODE_KEY = 'audit_app_mode_v1';
+var appMode = (function(){
+  try{ var m = localStorage.getItem(APP_MODE_KEY); if(m==='admin' || m==='user') return m; }catch(e){}
+  return null;
+})();
+function modeKey(adminKey, userKey){ return appMode==='user' ? userKey : adminKey; }
+function setAppMode(mode){ appMode = mode; try{ localStorage.setItem(APP_MODE_KEY, mode); }catch(e){} }
+
 /* ============ DATA LOAD ============ */
 var DEFAULT_DATA = JSON.parse(document.getElementById('stockData').textContent);
 var DATA = DEFAULT_DATA;
 var DATA_SOURCE = 'bawaan'; // 'bawaan' | 'lokal' | 'publikasi'
 (function(){
   try{
-    var raw = localStorage.getItem('audit_master_override_v1');
+    var raw = localStorage.getItem(modeKey('audit_master_override_v1','audit_user_master_override_v1'));
     if(raw){ var parsed = JSON.parse(raw); if(parsed && Array.isArray(parsed.items)){ DATA = parsed; DATA_SOURCE = 'lokal'; } }
   }catch(e){}
 })();
@@ -1046,7 +1074,7 @@ function updateCurrentDbInfo(){
   var countText = fmtNum(ITEMS.length) + ' SKU';
   var srcLabel;
   if(ITEMS.length===0) srcLabel = 'Kosong — belum ada data produk';
-  else if(DATA_SOURCE==='cloud') srcLabel = (DATA.sourceFile ? 'Diimpor dari ' + DATA.sourceFile : 'Database produk') + ' — live, sama di semua perangkat';
+  else if(DATA_SOURCE==='cloud') srcLabel = (DATA.sourceFile ? 'Diimpor dari ' + DATA.sourceFile : 'Database produk') + (appMode==='user' ? ' — referensi dari server, scan & impor Anda tersimpan lokal di perangkat ini' : ' — live, sama di semua perangkat');
   else if(DATA_SOURCE==='lokal') srcLabel = 'Impor (' + (DATA.sourceFile||'file') + ') — tersimpan di perangkat ini saja';
   else if(DATA.sourceFile) srcLabel = 'Diimpor dari ' + DATA.sourceFile + ' — tersimpan untuk semua pengguna';
   else srcLabel = branchLabel();
@@ -1106,12 +1134,12 @@ function updateSyncPill(){
 
 function loadLocalFallback(){
   try{
-    var raw = safeGet('audit_local_scans_v1');
+    var raw = safeGet(modeKey('audit_local_scans_v1','audit_user_scans_v1'));
     if(raw){
       var obj = JSON.parse(raw);
       Object.keys(obj).forEach(function(k){ liveScans.set(k, obj[k]); });
     }
-    var rawU = safeGet('audit_local_unknown_v1');
+    var rawU = safeGet(modeKey('audit_local_unknown_v1','audit_user_unknown_v1'));
     if(rawU){
       var objU = JSON.parse(rawU);
       Object.keys(objU).forEach(function(k){ liveUnknown.set(k, objU[k]); });
@@ -1121,9 +1149,9 @@ function loadLocalFallback(){
 function saveLocalFallback(){
   try{
     var obj = {}; liveScans.forEach(function(v,k){ obj[k]=v; });
-    safeSet('audit_local_scans_v1', JSON.stringify(obj));
+    safeSet(modeKey('audit_local_scans_v1','audit_user_scans_v1'), JSON.stringify(obj));
     var objU = {}; liveUnknown.forEach(function(v,k){ objU[k]=v; });
-    safeSet('audit_local_unknown_v1', JSON.stringify(objU));
+    safeSet(modeKey('audit_local_unknown_v1','audit_user_unknown_v1'), JSON.stringify(objU));
   }catch(e){}
 }
 
@@ -1319,6 +1347,29 @@ async function initStore(){
   initExportHistory();
 }
 
+/* User mode: scans/unknown-codes/imports/export-history stay strictly local
+   to this browser (storeMode is forced to 'local' and never flips to 'db'),
+   but the product master catalog is still fetched once, read-only, from the
+   cloud so scanning uses accurate up-to-date SKU/price/category data. No
+   realtime subscription and no push-back — this device never leaks its
+   activity to, or receives other devices'/Admin's live activity from,
+   anyone else. */
+async function initStoreUser(){
+  storeMode = 'local';
+  loadLocalFallback();
+  try{
+    var ok = await loadSupabaseJs();
+    if(ok){
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      try{ await loadInitialProducts(); }
+      catch(e2){ console.warn('product catalog fetch unavailable in user mode, keeping local/baked-in catalog.', e2); }
+    }
+  }catch(e){ console.warn('supabase-js unavailable in user mode, using baked-in/local catalog only.', e); }
+  updateSyncPill();
+  scheduleRecompute();
+  initExportHistory();
+}
+
 /* ============ TOAST ============ */
 function toast(msg, kind){
   var host = document.getElementById('toastHost');
@@ -1342,6 +1393,23 @@ function beep(ok){
     o.start();
     g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + (ok?0.14:0.28));
     o.stop(audioCtx.currentTime + (ok?0.15:0.3));
+  }catch(e){}
+}
+/* Distinct double-beep (different from the single 'kode tidak dikenal' beep)
+   so staff can tell by ear that a scan was thrown out because two scanners
+   fired at nearly the same instant, not because the code itself is unknown. */
+function beepCollision(){
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.16].forEach(function(delay){
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.connect(g); g.connect(audioCtx.destination);
+      o.type = 'square'; o.frequency.value = 340; g.gain.value = 0.07;
+      var t0 = audioCtx.currentTime + delay;
+      o.start(t0);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.1);
+      o.stop(t0 + 0.11);
+    });
   }catch(e){}
 }
 
@@ -1752,11 +1820,57 @@ document.querySelectorAll('.tab').forEach(function(tab){
 
 /* ============ WIRE UP: SCAN ============ */
 var scanInput = document.getElementById('scanInput');
+
+/* ---- Multi-scanner collision guard ----
+   Several USB/Bluetooth barcode scanners in normal keyboard-wedge mode all
+   feed the SAME focused field, exactly like several keyboards typing into
+   one box — that's already how this works with any number of scanners
+   plugged in, no COM-port or OPOS driver needed. The one real risk is two
+   people scanning at almost the same instant: the two keystroke bursts can
+   interleave into one corrupted code. A genuine single-scanner burst is
+   extremely fast and evenly paced; a spliced/interleaved burst shows mostly
+   very fast gaps plus one (or more) implausibly large gap where the two
+   bursts met. We time the gaps between keystrokes while the field fills and
+   check the pattern on Enter, before the code is ever looked up — so a
+   collision is caught and thrown out instead of silently corrupting a scan
+   or (far more rarely) matching the wrong SKU. */
+var SCAN_FAST_GAP_MS = 25;
+var SCAN_COLLISION_GAP_MS = 70;
+var SCAN_MIN_LEN_FOR_CHECK = 8;
+var scanKeyTimes = [];
+scanInput.addEventListener('input', function(){
+  var len = scanInput.value.length;
+  if(len === 0){ scanKeyTimes = []; return; }
+  if(len < scanKeyTimes.length){ scanKeyTimes = []; } // edited/backspaced: restart timing fresh
+  scanKeyTimes.push(performance.now());
+});
+function detectScanCollision(){
+  if(scanInput.value.length < SCAN_MIN_LEN_FOR_CHECK || scanKeyTimes.length < SCAN_MIN_LEN_FOR_CHECK) return false;
+  var gaps = [];
+  for(var i=1;i<scanKeyTimes.length;i++) gaps.push(scanKeyTimes[i]-scanKeyTimes[i-1]);
+  if(!gaps.length) return false;
+  var fastCount = gaps.filter(function(g){ return g <= SCAN_FAST_GAP_MS; }).length;
+  var hasBigGap = gaps.some(function(g){ return g >= SCAN_COLLISION_GAP_MS; });
+  return hasBigGap && (fastCount / gaps.length) >= 0.6;
+}
+function flashScanCollision(){
+  scanInput.classList.remove('collision'); void scanInput.offsetWidth;
+  scanInput.classList.add('collision');
+  setTimeout(function(){ scanInput.classList.remove('collision'); }, 400);
+}
 scanInput.addEventListener('keydown', function(e){
   if(e.key==='Enter'){
     e.preventDefault();
     var val = scanInput.value;
+    var isCollision = detectScanCollision();
     scanInput.value = '';
+    scanKeyTimes = [];
+    if(isCollision){
+      beepCollision();
+      flashScanCollision();
+      toast('Tabrakan scan dari 2 scanner terdeteksi — kode dibuang, ulangi scan.', 'bad');
+      return;
+    }
     handleScan(val, val.length>=8 ? 'hid' : 'manual');
   }
 });
@@ -1877,7 +1991,7 @@ document.getElementById('exportBtn').addEventListener('click', async function(){
 });
 
 /* ============ EXPORT HISTORY (assets+db with localStorage fallback) ============ */
-var EXPORT_HIST_LOCAL_KEY = 'audit_export_history_v1';
+var EXPORT_HIST_LOCAL_KEY = modeKey('audit_export_history_v1','audit_user_export_history_v1');
 var EXPORT_HIST_LOCAL_BUDGET = 3000000; // keep roughly this many bytes of csv text locally
 var EXPORT_HIST_LOCAL_MAX = 10;
 var exportHistory = []; // {id, filename, createdAt, sizeBytes, by, assetId?, csv?}
@@ -2215,16 +2329,18 @@ async function applyImport(newItems, sourceName, opts){
   }
 
   var publishedForAll = false;
-  try{
-    var artifactNS = window.claude && window.claude.use ? await window.claude.use('artifact') : null;
-    if(artifactNS){
-      var html = buildPublishHtml(newData);
-      if(html){
-        await artifactNS.publish(html);
-        publishedForAll = true;
+  if(appMode!=='user'){
+    try{
+      var artifactNS = window.claude && window.claude.use ? await window.claude.use('artifact') : null;
+      if(artifactNS){
+        var html = buildPublishHtml(newData);
+        if(html){
+          await artifactNS.publish(html);
+          publishedForAll = true;
+        }
       }
-    }
-  }catch(e){ console.warn('artifact publish failed', e); }
+    }catch(e){ console.warn('artifact publish failed', e); }
+  }
 
   if(publishedForAll){
     DATA_SOURCE = 'publikasi';
@@ -2234,7 +2350,7 @@ async function applyImport(newItems, sourceName, opts){
   }
 
   DATA_SOURCE = 'lokal';
-  try{ localStorage.setItem('audit_master_override_v1', JSON.stringify(newData)); }catch(e){}
+  try{ localStorage.setItem(modeKey('audit_master_override_v1','audit_user_master_override_v1'), JSON.stringify(newData)); }catch(e){}
   setImportStatus(opts.isReset ? 'Database produk dikosongkan, tapi hanya tersimpan di perangkat/browser ini (tidak ada akses publikasi bersama di tampilan ini).' : 'Database diperbarui, tapi hanya tersimpan di perangkat/browser ini (tidak ada akses publikasi bersama di tampilan ini).', 'warn');
   toast(opts.isReset ? 'Database produk dikosongkan (lokal).' : ('Impor berhasil (lokal): ' + fmtNum(newItems.length) + ' produk.'), 'ok');
   updateDashSub();
@@ -2947,14 +3063,80 @@ document.getElementById('bcSheetPrintBtn').addEventListener('click', function(){
 });
 bcLoadSheetSettings();
 
+/* ============ MODE GATE (Admin vs User) ============ */
+var USER_HIDDEN_TABS = ['dashboard','inventory','history','barcode'];
+function applyModeUI(){
+  if(appMode==='user'){
+    USER_HIDDEN_TABS.forEach(function(name){
+      var btn = document.querySelector('.tab[data-tab="'+name+'"]');
+      if(btn) btn.style.display = 'none';
+      var panel = document.getElementById('tab-'+name);
+      if(panel) panel.hidden = true;
+    });
+    if(USER_HIDDEN_TABS.indexOf(activeTab)!==-1){
+      var scanBtn = document.querySelector('.tab[data-tab="scan"]');
+      if(scanBtn) scanBtn.click();
+    }
+  }
+  var modeBtn = document.getElementById('modeSwitchBtn');
+  if(modeBtn){
+    modeBtn.textContent = appMode==='user' ? 'Mode User · Ganti' : 'Mode Admin · Ganti';
+    modeBtn.addEventListener('click', function(){
+      if(window.confirm('Keluar dari mode saat ini dan pilih ulang mode di perangkat ini?')){
+        try{ localStorage.removeItem(APP_MODE_KEY); }catch(e){}
+        location.reload();
+      }
+    });
+  }
+}
+function enterMode(mode){
+  setAppMode(mode);
+  location.reload();
+}
+function showModeGate(){
+  var host = document.getElementById('modalHost');
+  host.innerHTML = '<div class="modal-back" id="modeGateBack"><div class="modal-box">' +
+    '<h3>Pilih Mode Penggunaan</h3>' +
+    '<p>Pilih bagaimana aplikasi ini digunakan di perangkat/browser ini. Pilihan ini diingat khusus untuk perangkat ini.</p>' +
+    '<div class="modal-actions" style="flex-direction:column;align-items:stretch;gap:10px;">' +
+    '<button class="btn btn-primary" id="gateUserBtn">Masuk sebagai User (Scan &amp; Impor, lokal di perangkat ini)</button>' +
+    '<button class="btn" id="gateAdminBtn">Masuk sebagai Admin</button>' +
+    '</div>' +
+    '<div id="gatePinWrap" hidden style="margin-top:14px;">' +
+      '<input type="password" id="gatePinInput" placeholder="Masukkan PIN Admin" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid var(--line,#ccc);margin-bottom:10px;font-size:16px;" />' +
+      '<div class="modal-actions"><button class="btn" id="gatePinCancel">Batal</button><button class="btn btn-primary" id="gatePinConfirm">Masuk sebagai Admin</button></div>' +
+    '</div>' +
+  '</div></div>';
+  document.getElementById('gateUserBtn').addEventListener('click', function(){ enterMode('user'); });
+  document.getElementById('gateAdminBtn').addEventListener('click', function(){
+    document.getElementById('gatePinWrap').hidden = false;
+    document.getElementById('gatePinInput').focus();
+  });
+  document.getElementById('gatePinCancel').addEventListener('click', function(){
+    document.getElementById('gatePinWrap').hidden = true;
+    document.getElementById('gatePinInput').value = '';
+  });
+  function tryPin(){
+    var val = document.getElementById('gatePinInput').value;
+    if(val === ADMIN_PIN){ enterMode('admin'); }
+    else { document.getElementById('gatePinInput').value=''; document.getElementById('gatePinInput').focus(); toast('PIN salah.', 'bad'); }
+  }
+  document.getElementById('gatePinConfirm').addEventListener('click', tryPin);
+  document.getElementById('gatePinInput').addEventListener('keydown', function(e){ if(e.key==='Enter') tryPin(); });
+}
+
 /* ============ INIT ============ */
-renderCatChips();
-recomputeAll();
-renderActiveTab();
-updateDashSub();
-updateHistSub();
-updateCurrentDbInfo();
-initStore();
+function bootApp(){
+  applyModeUI();
+  renderCatChips();
+  recomputeAll();
+  renderActiveTab();
+  updateDashSub();
+  updateHistSub();
+  updateCurrentDbInfo();
+  if(appMode==='user') initStoreUser(); else initStore();
+}
+if(appMode==='admin' || appMode==='user'){ bootApp(); } else { showModeGate(); }
 
 })();
 </script>
