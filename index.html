@@ -855,12 +855,12 @@ table.data tbody tr:last-child td{ border-bottom:none; }
           <h3>Ukuran Label &amp; Lembar</h3>
           <p class="panel-sub">Sesuaikan dengan ukuran kotak di lembar stiker fisik Anda agar hasil cetak pas.</p>
           <div class="bc-settings-grid">
-            <label>Lebar label (mm)<input id="bcSetW" type="number" min="15" max="100" step="0.5" value="40" /></label>
-            <label>Tinggi label (mm)<input id="bcSetH" type="number" min="10" max="80" step="0.5" value="25" /></label>
+            <label>Lebar label (mm)<input id="bcSetW" type="number" min="15" max="100" step="0.5" value="39" /></label>
+            <label>Tinggi label (mm)<input id="bcSetH" type="number" min="10" max="80" step="0.5" value="26" /></label>
             <label>Kolom per baris<input id="bcSetCols" type="number" min="1" max="10" step="1" value="5" /></label>
-            <label>Jarak antar label (mm)<input id="bcSetGap" type="number" min="0" max="20" step="0.5" value="2" /></label>
-            <label>Mulai dari atas (mm)<input id="bcSetTop" type="number" min="0" max="60" step="0.5" value="8" /></label>
-            <label>Mulai dari kiri (mm)<input id="bcSetLeft" type="number" min="0" max="60" step="0.5" value="8" /></label>
+            <label>Jarak antar label (mm)<input id="bcSetGap" type="number" min="0" max="20" step="0.5" value="1" /></label>
+            <label>Mulai dari atas (mm)<input id="bcSetTop" type="number" min="0" max="60" step="0.5" value="6" /></label>
+            <label>Mulai dari kiri (mm)<input id="bcSetLeft" type="number" min="0" max="60" step="0.5" value="0" /></label>
           </div>
         </div>
 
@@ -2991,12 +2991,12 @@ function bcGetSheetSettings(){
     return Math.max(min, Math.min(max, v));
   }
   return {
-    w: num('bcSetW', 40, 15, 100),
-    h: num('bcSetH', 25, 10, 80),
+    w: num('bcSetW', 39, 15, 100),
+    h: num('bcSetH', 26, 10, 80),
     cols: Math.round(num('bcSetCols', 5, 1, 10)),
-    gap: num('bcSetGap', 2, 0, 20),
-    top: num('bcSetTop', 8, 0, 60),
-    left: num('bcSetLeft', 8, 0, 60)
+    gap: num('bcSetGap', 1, 0, 20),
+    top: num('bcSetTop', 6, 0, 60),
+    left: num('bcSetLeft', 0, 0, 60)
   };
 }
 bcSheetSettingIds.forEach(function(id){
